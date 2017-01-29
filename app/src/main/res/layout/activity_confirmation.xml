@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_confirmation"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ConfirmationActivity"
+    android:background="@drawable/kei">
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_height="wrap_content"
+        android:id="@+id/textInputLayout2"
+        android:layout_width="match_parent"
+        android:background="@color/bootstrap_brand_secondary_fill">
+
+        <EditText
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ems="10"
+            android:id="@+id/search"
+            android:textSize="24sp"
+            android:hint="正しく入力してください。"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchlist"
+        android:layout_alignParentStart="false"
+        android:layout_below="@+id/textInputLayout2"
+        android:background="@color/bootstrap_brand_secondary_fill"
+        android:elevation="1dp"
+        />
+
+</RelativeLayout>
