@@ -56,7 +56,6 @@ public class RankingActivity extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.ranking_activity,container,false);
 
-
         //
         sexRadioGroup = (RadioGroup)v.findViewById(R.id.sex_radio_group);
         sexRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

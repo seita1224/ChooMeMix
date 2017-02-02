@@ -39,13 +39,10 @@ public class MailActivity extends Activity{
 
                 // 入力された文字を取得
                 String ma = mail.getText().toString();
-                textView.setText(ma);
 
                 String pa = pass.getText().toString();
-                textView1.setText(pa);
 
                 String pare = passReview.getText().toString();
-                textView2.setText(pare);
 
                 if(ma.length() >= 6&&ma.length() <= 20 ) {
                 }else if(pa == pare){

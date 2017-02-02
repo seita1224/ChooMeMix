@@ -2,16 +2,21 @@ package com.example.hiro.myapplication.ServerConnectionController;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.EditText;
 
 
 import com.example.hiro.myapplication.DBController.Goodsdata;
+import com.example.hiro.myapplication.DBController.Userdata;
 import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.AsyncCallBack;
+import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.SendCallBack;
 import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.main.GoodsReceive;
 import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.main.RankingReceive;
 import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.main.UserReceive;
+import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.main.UserSend;
 import com.example.hiro.myapplication.ServerConnectionController.JsonParse.GoodsJsonPase;
 import com.example.hiro.myapplication.ServerConnectionController.JsonParse.GoodsSearch;
 import com.example.hiro.myapplication.ServerConnectionController.JsonParse.RankingJsonPase;
+import com.example.hiro.myapplication.ServerConnectionController.JsonParse.UserJsonParse;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,7 +33,6 @@ import java.util.ArrayList;
 public class ConnectionHelper {
     private SendJsonAsyncTask send = null;  //データ送信用の非同期処理クラス
     private ReceiveJsonAsyncTask receive = null;    //データ受信用の非同期処理クラス
-
     private GoodsSearchTask goods = null;//goods用データ受信用の非同期処理クラス
 
     private URL url = null; //送受信先のURL
@@ -37,10 +41,22 @@ public class ConnectionHelper {
     private int statusCode;
     private Context context;
 
+    //送信用JSON
+    JSONObject userJson = null;
+
     //URL生成用
     final private String DOMEIN = "http://choome.itsemi.net/";
     final private String API_VERSION = "api/1.0/";
-    final private String API_CODE = "&key=pcdEhBroxNohtmKoek8iE34hQ6FZYbp";
+    final private String API_KEY = "&key=pcdEhBroxNohtmKoek8iE34hQ6FZYbp";
+
+    //POSTデータ送信用
+    final String LOGIN_REQUEST[] = {"name=","email=","age=","password=","sex=","hobbies_id="};
+    final String NAME = "name=";
+    final String EMAIL = "email=";
+    final String AGE = "age=";
+    final String PASSWORD = "password=";
+    final String SEX = "sex=";
+    final String HOBBIES_ID = "hobbies_id=";
 
     //ランキングに対応するArrayList
     ArrayList<Goodsdata> goodsdatas;
@@ -49,6 +65,7 @@ public class ConnectionHelper {
     private RankingReceive rankingReceive;
     private UserReceive userReceive;
     private  GoodsReceive goodsReceive;
+    private UserSend userSend;
     
     //-----------------------------コンストラクタ-----------------------------
     public ConnectionHelper(Context context){
@@ -155,8 +172,26 @@ public class ConnectionHelper {
 
     //-----------------------------送信-----------------------------
     //ユーザ情報送信
-    public void sendUserTask(){
-        send = new SendJsonAsyncTask();
+    public void sendUserTask(Userdata userdata){
+        setUrl("apiregister/?");
+        //ユーザーデータPOSTデータ化
+        String request = "";
+        request += NAME + userdata.getName() + "&";
+        request += EMAIL + userdata.getEmail() + "&";
+        request += PASSWORD + userdata.getPassword() + "&";
+        request += SEX + userdata.getSex() + "&";
+        request += AGE + userdata.getAge() + "&";
+        request += HOBBIES_ID + userdata.getHobbies();
+        request += API_KEY;
+
+        //JSONObject化したJsonデータを非同期で送信する
+        send = new SendJsonAsyncTask(url,request);
+        send.setSendCallBack(new SendCallBack() {
+            @Override
+            public void SendCallBack(String message) {
+                userSend.sendUser(message);
+            }
+        });
         send.execute();
     }
 
@@ -184,7 +219,7 @@ public class ConnectionHelper {
                     "&genre=" + genre +
                     "&hobbie=" + hobbie +
                     "&goodstype=" + goodstype+
-                    API_CODE);
+                    API_KEY);
 
             Log.d("URL",DOMEIN +
                     API_VERSION +
@@ -195,7 +230,7 @@ public class ConnectionHelper {
                     "&genre=" + genre +
                     "&hobbie=" + hobbie +
                     "&goodstype=" + goodstype+
-                    API_CODE);
+                    API_KEY);
         } catch (MalformedURLException e) {
             Log.e("ConnectionHelper",e.toString());
         }
@@ -207,36 +242,39 @@ public class ConnectionHelper {
                     API_VERSION +
                     informationType +
                     "word=" + word +
-                    API_CODE);
+                    API_KEY);
 
         } catch (MalformedURLException e) {
             Log.e("ConnectionHelper",e.toString());
         }
     }
 
-    //送受信用URLにURLをセット
+    //送受信用URLにURLをセット(商品検索用URL)
     public void setUrl(String dataTyep,String word){
         try {
-            Log.d("ConnectionHelper",DOMEIN +
+            Log.d(getClass().getName(),DOMEIN +
                     API_VERSION +
                     dataTyep +
                     "word=" + word +
-                    API_CODE);
+                    API_KEY);
             url = new URL((DOMEIN +
                     API_VERSION +
                     dataTyep +
                     "word=" + word +
-                    API_CODE));
+                    API_KEY));
             Log.d("ConnectionHelper","dataTyep:" + dataTyep + ",URL:" + url.toString());
         } catch (MalformedURLException e) {
             Log.e("ConnectionHelper",e.toString());
         }
     }
 
-    //送受信用URLにURLをセット
+    //送信用URLにURLをセット
     public void setUrl(String str){
         try {
-            url = new URL(str);
+            url = new URL((DOMEIN +
+                    API_VERSION +
+                    str +
+                    API_KEY));
         } catch (MalformedURLException e) {
             Log.e("ConnectionHelper",e.toString());
         }
@@ -249,6 +287,9 @@ public class ConnectionHelper {
     public void setConnectionCallBack(GoodsReceive goodsReceive){this.goodsReceive = goodsReceive;}
     //ユーザー
     public void setConnectionCallBack(UserReceive userReceive){this.userReceive = userReceive;}
+
+    //ユーザー登録用
+    public  void setConnectionCallBack(UserSend userSend){this.userSend = userSend;}
 
     //エラー処理用メソッド
     public boolean checkError(){
@@ -271,4 +312,11 @@ public class ConnectionHelper {
         return true;
     }
 
+    public void setUserReceive(UserReceive userReceive) {
+        this.userReceive = userReceive;
+    }
+
+    public void setUserSend(UserSend userSend) {
+        this.userSend = userSend;
+    }
 }

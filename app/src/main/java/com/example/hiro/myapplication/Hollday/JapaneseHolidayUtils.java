@@ -68,8 +68,8 @@ public class JapaneseHolidayUtils {
         if (name != null) return name;
 
         // 振替休日判定
-        name = getSubstituteHoliday(cal);
-        if (name != null) return name;
+//        name = getSubstituteHoliday(cal);
+//        if (name != null) return name;
 
         // 国民の休日判定
         name = getCitizensHoliday(cal);
@@ -166,27 +166,26 @@ public class JapaneseHolidayUtils {
         }
 
         // 振替休日取得
-        List< Calendar > shList = new ArrayList< Calendar >();
-        for (Calendar cal : list) {
-            Calendar c = tomorrow(cal);
-            if (getSubstituteHoliday(c) != null &&
-                    !list.contains(c)) {
-                shList.add(c);
-            }
-        }
+//        List< Calendar > shList = new ArrayList< Calendar >();
+//        for (Calendar cal : list) {
+//            Calendar c = tomorrow(cal);
+//            if (getSubstituteHoliday(c) != null &&
+//                    !list.contains(c)) {
+//                shList.add(c);
+//            }
+//        }
 
         // 国民の休日取得
         List< Calendar > chList = new ArrayList< Calendar >();
         for (Calendar cal : list) {
             Calendar c = tomorrow(cal);
             if (getCitizensHoliday(c) != null &&
-                    !list.contains(c) &&
-                    !shList.contains(c)) {
+                    !list.contains(c)
+                    ) {
                 chList.add(c);
             }
         }
 
-        list.addAll(shList);
         list.addAll(chList);
         Collections.sort(list);
         return list;
@@ -199,26 +198,26 @@ public class JapaneseHolidayUtils {
         // 日曜の場合は、振替休日にはならない
         if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) return null;
 
-        Calendar c = yesterday(cal);
-        if (AMENDMENT_DATE_8TH.compareTo(cal) > 0) {
-            // 祝日が日曜日の場合はその翌日の月曜日を振替休日とする
-            if (isNationalHoliday(c) &&
-                    c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-                return SUBSTITUTE_HOLIDAY;
-            }
-        } else {
-            // 連続する祝日のうち、どれか1日が日曜日と重なった場合は、最後の祝日の翌日が振替休日とする
-            while (true) {
-                if (isNationalHoliday(c)) {
-                    if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-                        return SUBSTITUTE_HOLIDAY;
-                    }
-                } else {
-                    break;
-                }
-                c = yesterday(c);
-            }
-        }
+//        Calendar c = yesterday(cal);
+//        if (AMENDMENT_DATE_8TH.compareTo(cal) > 0) {
+//            // 祝日が日曜日の場合はその翌日の月曜日を振替休日とする
+//            if (isNationalHoliday(c) &&
+//                    c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+//                return SUBSTITUTE_HOLIDAY;
+//            }
+//        } else {
+//            // 連続する祝日のうち、どれか1日が日曜日と重なった場合は、最後の祝日の翌日が振替休日とする
+//            while (true) {
+//                if (isNationalHoliday(c)) {
+//                    if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+//                        return SUBSTITUTE_HOLIDAY;
+//                    }
+//                } else {
+//                    break;
+//                }
+//                c = yesterday(c);
+//            }
+//        }
         return null;
     }
 

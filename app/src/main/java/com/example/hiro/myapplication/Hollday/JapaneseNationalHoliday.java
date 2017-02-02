@@ -14,15 +14,6 @@ import java.util.GregorianCalendar;
 
 public enum JapaneseNationalHoliday {
 
-    NewYearsDay                        ("元日") {
-        @Override
-        public Calendar dateOf(int year) {
-            if (1949 <= year) {
-                return toCalendar(year, 1, 1);
-            }
-            return null;
-        }
-    },
     ComingOfAgeDay                    ("成人の日") {
         @Override
         public Calendar dateOf(int year) {
@@ -34,53 +25,8 @@ public enum JapaneseNationalHoliday {
             return null;
         }
     },
-    NationalFoundationDay            ("建国記念日") {
-        @Override
-        public Calendar dateOf(int year) {
-            if (1967 <= year) {
-                return toCalendar(year, 2, 11);
-            }
-            return null;
-        }
-    },
-    VernalEquinoxDay                ("春分の日") {
-        @Override
-        public Calendar dateOf(int year) {
-            if (1949 <= year) {
-                return toCalendar(year, 3, calcVernalEquinoxDay(year));
-            }
-            return null;
-        }
-    },
-    GreeneryDay                        ("みどりの日") {
-        @Override
-        public Calendar dateOf(int year) {
-            if (1989 <= year && year <= 2006) {
-                return toCalendar(year, 4, 29);
-            } else if (2007 <= year) {
-                return toCalendar(year, 5, 4);
-            }
-            return null;
-        }
-    },
-    ShowaDay                        ("昭和の日") {
-        @Override
-        public Calendar dateOf(int year) {
-            if (2007 <= year) {
-                return toCalendar(year, 4, 29);
-            }
-            return null;
-        }
-    },
-    ConstitutionMemorialDay            ("憲法記念日") {
-        @Override
-        public Calendar dateOf(int year) {
-            if (1949 <= year) {
-                return toCalendar(year, 5, 3);
-            }
-            return null;
-        }
-    },
+
+
     ChildrensDay                    ("こどもの日") {
         @Override
         public Calendar dateOf(int year) {
@@ -90,22 +36,21 @@ public enum JapaneseNationalHoliday {
             return null;
         }
     },
-    MarineDay                        ("海の日") {
+
+    MotherDay                    ("母の日") {
         @Override
         public Calendar dateOf(int year) {
-            if (1996 <= year && year <= 2002) {
-                return toCalendar(year, 7, 20);
-            } else if (2003 <= year) {
-                return mondayOf(year, 7, 3);
+            if (1913 <= year) {
+                return sundayOf(year, 5, 2);
             }
             return null;
         }
     },
-    MountainDay                        ("山の日") {
+    FatherDay                    ("父の日") {
         @Override
         public Calendar dateOf(int year) {
-            if (2016 <= year) {
-                return toCalendar(year, 8, 11);
+            if (1966 <= year) {
+                return sundayOf(year, 6, 3);
             }
             return null;
         }
@@ -121,51 +66,12 @@ public enum JapaneseNationalHoliday {
             return null;
         }
     },
-    AutumnalEquinoxDay                ("秋分の日") {
+
+    Xmas                    ("クリスマス") {
         @Override
         public Calendar dateOf(int year) {
-            if (1948 <= year) {
-                return toCalendar(year, 9, calcAutumnalEquinoxDay(year));
-            }
-            return null;
-        }
-    },
-    HealthAndSportsDay                ("体育の日") {
-        @Override
-        public Calendar dateOf(int year) {
-            if (1966 <= year && year <= 1999) {
-                return toCalendar(year, 10, 10);
-            } else if (2000 <= year) {
-                return mondayOf(year, 10, 2);
-            }
-            return null;
-        }
-    },
-    NationalCultureDay                ("文化の日") {
-        @Override
-        public Calendar dateOf(int year) {
-            if (1948 <= year) {
-                return toCalendar(year, 11, 3);
-            }
-            return null;
-        }
-    },
-    LaborThanksgivingDay            ("勤労感謝の日") {
-        @Override
-        public Calendar dateOf(int year) {
-            if (1948 <= year) {
-                return toCalendar(year, 11, 23);
-            }
-            return null;
-        }
-    },
-    EmperorsBirthday                ("天皇誕生日") {
-        @Override
-        public Calendar dateOf(int year) {
-            if (1949 <= year && year <= 1988) {
-                return toCalendar(year, 4, 29);
-            } else if (1989 <= year) {
-                return toCalendar(year, 12, 23);
+            if (1900 <= year) {
+                return toCalendar(year, 12, 25);
             }
             return null;
         }
@@ -265,6 +171,16 @@ public enum JapaneseNationalHoliday {
         //cal.set(Calendar.WEEK_OF_MONTH, 1);
         cal.set(Calendar.DAY_OF_WEEK_IN_MONTH, ordinal);
         cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        return cal;
+    }
+
+    private static Calendar sundayOf(int year, int month, int ordinal) {
+        //Calendar cal = Calendar.getInstance();
+        Calendar cal = new GregorianCalendar(year, month-1 , 1);
+        //cal.set(year, month - 1, 1);
+        //cal.set(Calendar.WEEK_OF_MONTH, 1);
+        cal.set(Calendar.DAY_OF_WEEK_IN_MONTH, ordinal);
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         return cal;
     }
 

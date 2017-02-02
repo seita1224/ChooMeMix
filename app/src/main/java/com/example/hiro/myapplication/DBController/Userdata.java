@@ -10,9 +10,10 @@ import android.app.Application;
 public class Userdata extends Application{
     //フィールド
     private String e_mail;//メールアドレス
+    private String password;
     private String name;//名前
     private String sex;//性別
-    private String hobbies;//趣味
+    private int hobbies;//趣味
     private int id;//ユーザーID
     private int Age;//年齢
     private String token;//トークン情報
@@ -63,15 +64,20 @@ public class Userdata extends Application{
     }
 
     //hobbies
-    public String getHobbies() {
+    public int getHobbies() {
         return hobbies;
     }
-    public void setHobby(String hobbies) {
+    public void setHobby(int hobbies) {
         this.hobbies = hobbies;
     }
 
     public String getToken() {return token;}
     public void setToken(String token) {this.token = token;}
+
+    public String getPassword() {return password;}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
 
 //    public void paseData() {

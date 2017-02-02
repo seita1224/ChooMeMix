@@ -44,6 +44,9 @@ public class GoodsCardRecyclerAdapter extends RecyclerView.Adapter<GoodsCardRecy
         private Context context;
         private double rate; //商品の評価
 
+        private String imageName;
+        private File imageFile;
+
         ArrayList<Goodsdata> goodsdatas;//ランキング格納用ArrayList
         int i = 0;
 
@@ -90,15 +93,21 @@ public class GoodsCardRecyclerAdapter extends RecyclerView.Adapter<GoodsCardRecy
                                         public void receiveImage(Bitmap bm) {
                                                 goodsdatas.get(position).setPicture(bm);
                                                 vh.mGoodsImageView.setImageBitmap(goodsdatas.get(position).getPicture());
+                                                Log.d(getClass().getName(),"ImageView:setImage(" + position + ")");
+                                                imageName = Calendar.getInstance().getTime().toString() + ".jpeg";
+                                                imageFile = new File(context.getFilesDir(),imageName);
+                                                try {
+                                                        FileOutputStream out = new FileOutputStream(imageFile);
+                                                } catch (FileNotFoundException e) {
+                                                        e.printStackTrace();
+                                                }
                                         }
                                 });
                         receiveImageAsyncTask.execute();
                         receiveImageAsyncTask = null;
-
-                }else{
-                        vh.mGoodsImageView.setImageBitmap(goodsdatas.get(position).getPicture());
-                        Log.d(getClass().getName(),"ImageView:setImage(" + position + ")");
                 }
+                vh.mGoodsImageView.setImageBitmap(goodsdatas.get(position).getPicture());
+                Log.d(getClass().getName(),"ImageView:setImage(" + position + ")");
 
                 //カードビュー自体をクリックしたときの処理
                 vh.mGoodsResultRootLayout.setOnClickListener(new View.OnClickListener() {
@@ -140,17 +149,10 @@ public class GoodsCardRecyclerAdapter extends RecyclerView.Adapter<GoodsCardRecy
                 mBundle.putString("goodsName", (String) vh.mGoodsTextView.getText());
                 mBundle.putString("genres", (String) vh.mGenresTextView.getText());
                 mBundle.putInt("rate", (int) vh.mRateRatingBar.getRating());
-                String timeStamp = Calendar.getInstance().getTime().toString();
-                String imageName = timeStamp + ".png";
-                File imageFile = new File(context.getFilesDir(),imageName);
-                FileOutputStream out;
-                try {
-                        out = new FileOutputStream(imageFile);
-                        ((BitmapDrawable)vh.mGoodsImageView.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.JPEG, 0, out);
-                        ///画像をアプリの内部領域に保存
-                } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                }
+
+                Log.d(getClass().getName(),imageFile.toString());
+                ///画像をアプリの内部領域に保存
+                ((BitmapDrawable)vh.mGoodsImageView.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.JPEG, 0, out);
                 mBundle.putString("Image",imageFile.getAbsolutePath());
                 Log.d(getClass().getName(),imageFile.getAbsolutePath());
                 return mBundle;

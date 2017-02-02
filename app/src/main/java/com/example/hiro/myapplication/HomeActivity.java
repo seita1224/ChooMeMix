@@ -25,7 +25,7 @@ import java.util.Collections;
 
 import com.example.hiro.myapplication.AnniversaryDateControllre.DateChecker;
 
-import static com.example.hiro.myapplication.AnniversaryAddDelDeialogActivity.LOCAL_FILE;
+//import static com.example.hiro.myapplication.AnniversaryAddDelDeialogActivity.LOCAL_FILE;
 
 
 public class HomeActivity extends Activity {
@@ -53,7 +53,7 @@ public class HomeActivity extends Activity {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                anniversaryDays = readFile(LOCAL_FILE);
+//                anniversaryDays = readFile(LOCAL_FILE);
 
                 Log.d("HomeActivity1", String.valueOf(DateChecker.checkDate(anniversaryDays)));
 
@@ -119,23 +119,19 @@ public class HomeActivity extends Activity {
 
         //出来上がったソートデータで上書き
         BufferedWriter writer;
-        try {
-            writer = new BufferedWriter(new OutputStreamWriter(openFileOutput(LOCAL_FILE, MODE_PRIVATE), "UTF-8"));
+//            writer = new BufferedWriter(new OutputStreamWriter(openFileOutput(LOCAL_FILE, MODE_PRIVATE), "UTF-8"));
             //追記する
             for(String data:sortList){
                 if(data != null) {
                     String str[] = data.split(",");
-                    writer.append("[" + str[1] + "]" + "[" + str[0] + "]");
-                    writer.newLine();
+//                    writer.append("[" + str[1] + "]" + "[" + str[0] + "]");
+//                    writer.newLine();
 
                 }else{
                     Toast.makeText(getApplicationContext(),"データを読み込めません",Toast.LENGTH_SHORT);
                 }
             }
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//            writer.close();
         return sortList;
     }
 }

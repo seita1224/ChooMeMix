@@ -12,14 +12,10 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.GregorianCalendar;
 
 public class AnniversaryAddDelDeialogActivity extends AppCompatActivity{
 
-    public static final String LOCAL_FILE = "AnniversaryDate.txt";
     DatePicker mDatePicker = null;
     TextInputEditText mAnniversaryEditText = null;
     BootstrapButton mAddButton = null;
@@ -53,9 +49,6 @@ public class AnniversaryAddDelDeialogActivity extends AppCompatActivity{
                     //キーボードを閉じる
                     inputMethodManager.hideSoftInputFromWindow(mAnniversaryEditText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
 
-                    //登録ボタンを押したときの処理を実行する
-                    writeFile("[" + mAnniversaryEditText.getText() + "]" + "[" + mDatePicker.getYear() + mDatePicker.getMonth()+1 + mDatePicker.getDayOfMonth() + "]");
-
                     return true;
                 }
                 return false;
@@ -65,49 +58,17 @@ public class AnniversaryAddDelDeialogActivity extends AppCompatActivity{
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                writeFile("[" + mAnniversaryEditText.getText() + "]" + "[" + mDatePicker.getYear() + mDatePicker.getMonth()+1 + mDatePicker.getDayOfMonth() + "]");
+
             }
         });
 
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                finish();   //Dialogを閉じる
             }
         });
 
     }
 
-    private void writeFile(String data){
-        //エラー判定
-        if(String.valueOf(mAnniversaryEditText.getText()).equals("")){
-            Toast.makeText(getApplicationContext(),"記念名を入力してください",Toast.LENGTH_SHORT).show();
-            return;
-        }else if(String.valueOf(mAnniversaryEditText.getText()).startsWith("[") || String.valueOf(mAnniversaryEditText.getText()).startsWith("]")){
-            Toast.makeText(getApplicationContext(),"申し訳ございません「[」又は「]」は使用できません",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(mDatePicker.getYear() == 0){
-            Toast.makeText(getApplicationContext(),"記念日を入力してください",Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        BufferedWriter writer;
-        Log.d("AnniversaryAddDel...",data);
-        try {
-            writer = new BufferedWriter(new OutputStreamWriter(openFileOutput(LOCAL_FILE, MODE_PRIVATE|MODE_APPEND), "UTF-8"));
-            //追記する
-            if(data != null) {
-                writer.append(data);
-                writer.newLine();
-                writer.close();
-            }else{
-                Toast.makeText(getApplicationContext(),"記念日を入力してください",Toast.LENGTH_SHORT);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            finish();
-        }
-        finish();
-    }
 }

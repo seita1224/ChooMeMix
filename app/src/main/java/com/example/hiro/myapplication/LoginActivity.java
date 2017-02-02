@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.hiro.myapplication.DBController.Userdata;
 import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.AsyncCallBack;
 import com.example.hiro.myapplication.ServerConnectionController.ConnectionHelper;
 import com.example.hiro.myapplication.ServerConnectionController.JsonParse.RankingJsonPase;
@@ -29,6 +30,8 @@ public class LoginActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Userdata userdata = new Userdata();
 
 
         TextView link = (TextView) findViewById(R.id.textView4);
