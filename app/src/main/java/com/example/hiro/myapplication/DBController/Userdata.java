@@ -19,9 +19,19 @@ public class Userdata extends Application{
     private String token;//トークン情報
 
     //コンストラクタ
-    public Userdata() {
+    public Userdata() {}
 
+    public void UserdataReset(){
+        e_mail = "";
+        password = "";
+        name = "";
+        sex = "";
+        hobbies = 0;
+        id = 0;
+        Age = 0;
+        token = "";
     }
+
 
     //ID
     public int getId() {

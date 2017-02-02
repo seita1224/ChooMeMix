@@ -2,21 +2,21 @@ package com.example.hiro.myapplication.ServerConnectionController;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.EditText;
 
 
 import com.example.hiro.myapplication.DBController.Goodsdata;
 import com.example.hiro.myapplication.DBController.Userdata;
+import com.example.hiro.myapplication.R;
 import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.AsyncCallBack;
 import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.SendCallBack;
 import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.main.GoodsReceive;
+import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.main.GoodsRegister;
 import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.main.RankingReceive;
 import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.main.UserReceive;
 import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.main.UserSend;
 import com.example.hiro.myapplication.ServerConnectionController.JsonParse.GoodsJsonPase;
 import com.example.hiro.myapplication.ServerConnectionController.JsonParse.GoodsSearch;
 import com.example.hiro.myapplication.ServerConnectionController.JsonParse.RankingJsonPase;
-import com.example.hiro.myapplication.ServerConnectionController.JsonParse.UserJsonParse;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -50,13 +50,18 @@ public class ConnectionHelper {
     final private String API_KEY = "&key=pcdEhBroxNohtmKoek8iE34hQ6FZYbp";
 
     //POSTデータ送信用
-    final String LOGIN_REQUEST[] = {"name=","email=","age=","password=","sex=","hobbies_id="};
     final String NAME = "name=";
     final String EMAIL = "email=";
     final String AGE = "age=";
     final String PASSWORD = "password=";
     final String SEX = "sex=";
     final String HOBBIES_ID = "hobbies_id=";
+    final String COMMENT = "comment=";
+    final String RATE = "rate=";
+    final String GOODSTYPE = "goodstype=";
+    final String SCENES = "scenes=";
+    final String GENRES = "genres=";
+    final String TOKEN = "token=";
 
     //ランキングに対応するArrayList
     ArrayList<Goodsdata> goodsdatas;
@@ -66,7 +71,8 @@ public class ConnectionHelper {
     private UserReceive userReceive;
     private  GoodsReceive goodsReceive;
     private UserSend userSend;
-    
+    private GoodsRegister goodsRegister;
+
     //-----------------------------コンストラクタ-----------------------------
     public ConnectionHelper(Context context){
         this.context = context;
@@ -171,8 +177,8 @@ public class ConnectionHelper {
     }
 
     //-----------------------------送信-----------------------------
-    //ユーザ情報送信
-    public void sendUserTask(Userdata userdata){
+    //ユーザ登録
+    public void sendRegistrationUser(Userdata userdata){
         setUrl("apiregister/?");
         //ユーザーデータPOSTデータ化
         String request = "";
@@ -184,26 +190,51 @@ public class ConnectionHelper {
         request += HOBBIES_ID + userdata.getHobbies();
         request += API_KEY;
 
-        //JSONObject化したJsonデータを非同期で送信する
+        //Userのデータを非同期で送信する
         send = new SendJsonAsyncTask(url,request);
         send.setSendCallBack(new SendCallBack() {
             @Override
             public void SendCallBack(String message) {
-                userSend.sendUser(message);
+                userSend.responseUserMessage(message);
             }
         });
         send.execute();
     }
 
-    //商品情報送信
-    public void sendGoods(){
-        send = new SendJsonAsyncTask();
+    //ログイン
+    public void sendLoginUser(Userdata userdata){
+        setUrl("gettoken/?");
+        String request = EMAIL + userdata.getEmail();
+        request += PASSWORD + userdata.getPassword();
+        send = new SendJsonAsyncTask(url,request);
+        send.setSendCallBack(new SendCallBack() {
+            @Override
+            public void SendCallBack(String message) {
+                userSend.responseUserMessage(message);
+            }
+        });
         send.execute();
     }
 
-    //ランキング情報の送信
-    public void sendRankingTask(){
-        send = new SendJsonAsyncTask();
+    //商品登録
+    public void sendGoodsdata(Goodsdata goodsdata,String goodsType){
+        setUrl("register-and-review/?");
+
+        String request = NAME + goodsdata.getGoods_name() + "&";
+        request += COMMENT + goodsdata.getComment() + "&";
+        request += RATE + goodsdata.getRate() + "&";
+        request += GENRES + goodsdata.getGenre() + "&";
+        request += SCENES + goodsdata.getScene() + "&";
+        request += GOODSTYPE + goodsType;
+        request += API_KEY + "&" + TOKEN + ((Userdata)context).getToken();
+
+        send = new SendJsonAsyncTask(url,request);
+        send.setSendCallBack(new SendCallBack() {
+            @Override
+            public void SendCallBack(String message) {
+
+            }
+        });
         send.execute();
     }
 
@@ -236,33 +267,15 @@ public class ConnectionHelper {
         }
     }
 
-    public void setUrlword(String informationType,String word){
-        try {
-            url = new URL(DOMEIN +
-                    API_VERSION +
-                    informationType +
-                    "word=" + word +
-                    API_KEY);
-
-        } catch (MalformedURLException e) {
-            Log.e("ConnectionHelper",e.toString());
-        }
-    }
-
     //送受信用URLにURLをセット(商品検索用URL)
     public void setUrl(String dataTyep,String word){
         try {
-            Log.d(getClass().getName(),DOMEIN +
-                    API_VERSION +
-                    dataTyep +
-                    "word=" + word +
-                    API_KEY);
             url = new URL((DOMEIN +
                     API_VERSION +
                     dataTyep +
                     "word=" + word +
                     API_KEY));
-            Log.d("ConnectionHelper","dataTyep:" + dataTyep + ",URL:" + url.toString());
+            Log.d(getClass().getName(),",URL:" + url.toString());
         } catch (MalformedURLException e) {
             Log.e("ConnectionHelper",e.toString());
         }
@@ -275,6 +288,7 @@ public class ConnectionHelper {
                     API_VERSION +
                     str +
                     API_KEY));
+            Log.d(getClass().getName(),",URL:" + url.toString());
         } catch (MalformedURLException e) {
             Log.e("ConnectionHelper",e.toString());
         }
@@ -318,5 +332,9 @@ public class ConnectionHelper {
 
     public void setUserSend(UserSend userSend) {
         this.userSend = userSend;
+    }
+
+    public void setGoodsRegister(GoodsRegister goodsRegister) {
+        this.goodsRegister = goodsRegister;
     }
 }

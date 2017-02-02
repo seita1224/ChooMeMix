@@ -20,7 +20,6 @@ public class CardRecyclerView extends RecyclerView {
     public void setRecyclerAdapter(Context context){
         setLayoutManager(new LinearLayoutManager(context));
         BitmapDrawable bm = (BitmapDrawable) context.getResources().getDrawable(R.drawable.img1);
-        setAdapter(new CardRecyclerAdapter(context,context.getResources().getStringArray(R.array.goodsE),context.getResources().getStringArray(R.array.genresE),
-                bm.getBitmap()));
+
     }
 }

@@ -4,19 +4,15 @@ package com.example.hiro.myapplication;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.hiro.myapplication.DBController.Userdata;
-import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.main.UserReceive;
 import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.main.UserSend;
 import com.example.hiro.myapplication.ServerConnectionController.ConnectionHelper;
-import com.example.hiro.myapplication.ServerConnectionController.JsonParse.UserJsonParse;
 
 public class ConfigurationActivity extends Activity {
 
@@ -31,28 +27,20 @@ public class ConfigurationActivity extends Activity {
         setContentView(R.layout.activity_configuration);
 
         //----------------ここから通信処理
-
-        userdata.setAge(11);
-        userdata.setEmail("seita.1224@gmail.com");
-        userdata.setHobby(1);
-        userdata.setSex("男");
-        userdata.setName("田花　聖太");
-        userdata.setPassword("seita1224");
-
         connectionHelper = new ConnectionHelper(getApplicationContext());
         connectionHelper.setConnectionCallBack(new UserSend() {
             @Override
-            public void sendUser(String message) {
+            public void responseUserMessage(String message) {
                 Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
             }
         });
 
-        connectionHelper.sendUserTask(userdata);
+        connectionHelper.sendRegistrationUser(userdata);
 
         //----------------ここまで
 
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item,getResources().getStringArray(R.array.agelist));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item,getResources().getStringArray(R.array.list_age));
 
         //ポイント②「android.R.layout.simple_spinner_dropdown_item」ではなく、自作のレイアウト「spinner_dropdown_item.xml」を指定する
         //これによりスピナーを選択した際のドロップダウンリストのtextSize等を個別に設定出来るようになる。
@@ -75,7 +63,7 @@ public class ConfigurationActivity extends Activity {
             }
         });
 
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, R.layout.spinner_item,getResources().getStringArray(R.array.hobbylist));
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, R.layout.spinner_item,getResources().getStringArray(R.array.list_hobbies));
 
         //ポイント②「android.R.layout.simple_spinner_dropdown_item」ではなく、自作のレイアウト「spinner_dropdown_item.xml」を指定する
         //これによりスピナーを選択した際のドロップダウンリストのtextSize等を個別に設定出来るようになる。

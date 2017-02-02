@@ -1,23 +1,17 @@
 package com.example.hiro.myapplication;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.hiro.myapplication.DBController.Userdata;
-import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.AsyncCallBack;
+import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.main.UserSend;
 import com.example.hiro.myapplication.ServerConnectionController.ConnectionHelper;
-import com.example.hiro.myapplication.ServerConnectionController.JsonParse.RankingJsonPase;
-import com.example.hiro.myapplication.ServerConnectionController.ReceiveJsonAsyncTask;
-
-import org.json.JSONObject;
 
 /**
  * Created by 2130085 on 2016/10/28.
@@ -25,15 +19,29 @@ import org.json.JSONObject;
 
 public class LoginActivity extends Activity{
     Intent intent;
+    ConnectionHelper connectionHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Userdata userdata = new Userdata();
+        final Userdata userdata = new Userdata();
+        //------------ログイン情報の設定
 
+        /*
+        このあたりでEmail,Passwordをセットする
+         */
 
+        connectionHelper = new ConnectionHelper(getApplicationContext());
+        connectionHelper.setConnectionCallBack(new UserSend() {
+            @Override
+            public void responseUserMessage(String message) {
+                //この中に登録後の処理を記述
+                Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT);
+            }
+        });
+        //--------------------------------------------------
         TextView link = (TextView) findViewById(R.id.textView4);
         TextView link2 = (TextView) findViewById(R.id.textView5);
         Button btn = (Button) findViewById(R.id.button);
@@ -46,19 +54,11 @@ public class LoginActivity extends Activity{
             public void onClick(View v) {
                 intent = new Intent( getApplication(),TabActivity.class);
 
-                ConnectionHelper connection = new ConnectionHelper(getApplicationContext());
-
-//                if(){
-                    SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = data.edit();
-                    editor.putInt("LevelSave", 100);
-                    editor.apply();
-//                }else{
-//                    Log.d("ConnectionHelper","reciveRanking_");
-//                }
+                //HTTPリクエスト、レスポンスの処理
+                connectionHelper.sendRegistrationUser(userdata);
 
                 //次のアクティビティの起動
-                startActivity(intent);
+//                startActivity(intent);
             }
         });
         link.setClickable(true);

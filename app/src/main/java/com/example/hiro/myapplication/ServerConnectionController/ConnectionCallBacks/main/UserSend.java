@@ -9,5 +9,5 @@ import org.json.JSONObject;
  */
 
 public interface UserSend {
-    void sendUser(String message);
+    void responseUserMessage(String message);
 }

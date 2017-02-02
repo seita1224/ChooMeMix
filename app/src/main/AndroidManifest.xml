@@ -23,7 +23,9 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
             android:name=".MailActivity"
             android:screenOrientation="portrait" />
@@ -43,11 +45,7 @@
             android:name=".HelpActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ConfigurationActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ConfirmationresultActivity"
@@ -57,7 +55,13 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ProductregistrationActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".RankingSelectActivity"
             android:screenOrientation="portrait"

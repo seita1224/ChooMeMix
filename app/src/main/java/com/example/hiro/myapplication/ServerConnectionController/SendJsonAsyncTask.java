@@ -9,8 +9,10 @@ import com.example.hiro.myapplication.ServerConnectionController.JsonParse.UserJ
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -84,7 +86,7 @@ public class SendJsonAsyncTask extends AsyncTask<String,Void,String> {
 
             //送信
             out.flush();
-            Log.d("debug",out.toString());
+            Log.d(getClass().getName(),out.toString());
 
             message = httpc.getResponseMessage();
 
@@ -96,8 +98,17 @@ public class SendJsonAsyncTask extends AsyncTask<String,Void,String> {
                 is = httpc.getInputStream();
             }
 
-            message = is.toString();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
+            StringBuilder sb = new StringBuilder();
+
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+
+            message = sb.toString();
         } catch (IOException e) {
             Log.e("error",e.toString());
             Log.e(getClass().getName(),httpc.getRequestMethod());
@@ -110,10 +121,10 @@ public class SendJsonAsyncTask extends AsyncTask<String,Void,String> {
     }
 
     @Override
-    protected void onPostExecute(String str) {
-        super.onPostExecute(str);
+    protected void onPostExecute(String message) {
+        super.onPostExecute(message);
 
-        sendCallBack.SendCallBack(str);
+        sendCallBack.SendCallBack(message);
     }
 
     public void setSendCallBack(SendCallBack sc){

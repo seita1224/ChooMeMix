@@ -10,14 +10,19 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
+import com.example.hiro.myapplication.DBController.Userdata;
+
 public class StartActivity extends AppCompatActivity {
 
-
+    Userdata userdata;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_activity);
+
+        //現在のユーザ情報(登録済みの場合)を取得する
+        userdata = (Userdata) getApplication();
 
         //起動画面:ロゴのアニメーション設定
         ImageView img = (ImageView)findViewById(R.id.robot);
@@ -36,20 +41,16 @@ public class StartActivity extends AppCompatActivity {
 //            Intent intent = new Intent( getApplication(),LoginActivity.class);
             Intent intent;
 
-            SharedPreferences data = getSharedPreferences("DataSave", Context.MODE_PRIVATE);
-            int Level = data.getInt("LevelSave",1);
-
-
-            if(Level == 100){
-                intent = new Intent(getApplication(),TabActivity.class);
-            }else{
+            if(userdata.getToken() == null){
                 intent = new Intent(getApplication(),LoginActivity.class);
+            }else{
+                intent = new Intent(getApplication(),TabActivity.class);
             }
 
             //次のアクティビティの起動
             startActivity(intent);
             //スプラッシュの終了。
-            StartActivity.this.finish();
+            finish();
         }
     }
 }

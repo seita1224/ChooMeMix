@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/sceneS"
             android:spinnerMode="dialog"
-            android:entries="@array/scenes" />
+            android:entries="@array/list_scene" />
 
         <Button
             android:text="登録"

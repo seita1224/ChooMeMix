@@ -45,19 +45,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="246dp"
                 app:srcCompat="@drawable/i_rank1_21"
-                android:id="@+id/imageView4"
+                android:id="@+id/goodsTakeImageView"
                 />
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/textView19"
-                    android:layout_weight="0.17" />
 
                 <Button
                     android:text="参照"
@@ -83,7 +77,7 @@
                     android:inputType="text"
                     android:textSize="20sp"
                     android:padding="8dp"
-                    android:id="@+id/syname"/>
+                    android:id="@+id/goodsName"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -106,7 +100,7 @@
                 android:gravity="top|center_vertical"
                 android:background="@android:color/background_light"
                 android:elevation="5dp"
-                android:id="@+id/reviewText"
+                android:id="@+id/goodsCommentText"
                 android:maxLength="500"/>
 
             <TextView
@@ -127,31 +121,24 @@
             <Spinner
                 android:layout_width="206dp"
                 android:layout_height="51dp"
-                android:id="@+id/sceneSpinner"
+                android:id="@+id/genresSpinner"
                 android:spinnerMode="dialog"
-                android:entries="@array/genres" />
+                android:entries="@array/list_genre" />
 
             <Spinner
                 android:layout_width="206dp"
                 android:layout_height="51dp"
-                android:id="@+id/sceneS"
+                android:id="@+id/sceneSpinner"
                 android:spinnerMode="dialog"
-                android:entries="@array/scenes" />
+                android:entries="@array/list_scene" />
 
             <Spinner
                 android:layout_width="249dp"
                 android:layout_height="51dp"
-                android:id="@+id/spinnerw"
+                android:id="@+id/spinnerProducts"
                 android:spinnerMode="dialog"
                 android:entries="@array/Products"
                 android:layout_weight="0.14" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </LinearLayout>
 
             <Button
                 android:text="登録"
@@ -164,42 +151,6 @@
                 android:textColor="@android:color/background_light"
                 android:textSize="20dp"
                 android:layout_weight="0.77" />
-
-            <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/test1" />
-
-            <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/test2" />
-
-            <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/test3" />
-
-            <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/text4" />
-
-            <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/text5" />
-
-            <TextView
-                android:text="TextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/text6" />
 
 
         </LinearLayout>

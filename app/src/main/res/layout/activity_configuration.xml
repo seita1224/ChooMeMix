@@ -95,7 +95,7 @@
         android:layout_below="@+id/textView2"
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/title"
-        android:entries="@array/agelist"
+        android:entries="@array/list_age"
         android:layout_alignEnd="@+id/title"
         android:spinnerMode="dialog" />
 

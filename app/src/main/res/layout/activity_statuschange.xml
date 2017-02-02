@@ -62,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/age"
-        android:entries="@array/agelist"
+        android:entries="@array/list_age"
         android:spinnerMode="dialog"
         android:layout_below="@+id/textView2"
         android:layout_alignParentStart="true" />

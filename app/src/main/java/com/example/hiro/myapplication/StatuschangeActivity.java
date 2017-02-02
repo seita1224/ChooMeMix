@@ -37,7 +37,7 @@ public class StatuschangeActivity extends Activity {
             }
         });
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, getResources().getStringArray(R.array.agelist));
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, getResources().getStringArray(R.array.list_age));
 
         //ポイント②「android.R.layout.simple_spinner_dropdown_item」ではなく、自作のレイアウト「spinner_dropdown_item.xml」を指定する
         //これによりスピナーを選択した際のドロップダウンリストのtextSize等を個別に設定出来るようになる。
@@ -60,7 +60,7 @@ public class StatuschangeActivity extends Activity {
             }
         });
 
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, R.layout.spinner_item, getResources().getStringArray(R.array.hobbylist));
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, R.layout.spinner_item, getResources().getStringArray(R.array.list_hobbies));
 
         //ポイント②「android.R.layout.simple_spinner_dropdown_item」ではなく、自作のレイアウト「spinner_dropdown_item.xml」を指定する
         //これによりスピナーを選択した際のドロップダウンリストのtextSize等を個別に設定出来るようになる。

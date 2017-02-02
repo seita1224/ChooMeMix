@@ -22,24 +22,24 @@ public class RankingSelectActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ranking_select);
-
-        rankingListView = (ListView)findViewById(R.id.rankingListView);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.layout_list);
-
-        String list[] = getResources().getStringArray(R.array.list_ranking);
-        for(String str:list){
-            adapter.add(str);
-        }
-
-        rankingListView.setAdapter(adapter);
-
-        rankingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-            }
-        });
+//        setContentView(R.layout.activity_ranking_select);
+//
+//        rankingListView = (ListView)findViewById(R.id.rankingListView);
+//
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),R.layout.layout_list);
+//
+//        String list[] = getResources().getStringArray(R.array.list_ranking);
+//        for(String str:list){
+//            adapter.add(str);
+//        }
+//
+//        rankingListView.setAdapter(adapter);
+//
+//        rankingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//
+//            }
+//        });
     }
 }
