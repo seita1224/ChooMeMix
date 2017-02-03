@@ -1,6 +1,7 @@
 package com.example.hiro.myapplication.ServerConnectionController;
 
 import android.content.Context;
+import android.util.Base64InputStream;
 import android.util.Log;
 
 
@@ -21,6 +22,8 @@ import com.example.hiro.myapplication.ServerConnectionController.JsonParse.Ranki
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -62,6 +65,7 @@ public class ConnectionHelper {
     final String SCENES = "scenes=";
     final String GENRES = "genres=";
     final String TOKEN = "token=";
+    final String UPFILE = "upfile=";
 
     //ランキングに対応するArrayList
     ArrayList<Goodsdata> goodsdatas;
@@ -165,7 +169,6 @@ public class ConnectionHelper {
                 }
             }
         });
-
         receive.execute();
         Log.d("ConnectionHelper","通信処理");
     }
@@ -226,9 +229,10 @@ public class ConnectionHelper {
         request += GENRES + goodsdata.getGenre() + "&";
         request += SCENES + goodsdata.getScene() + "&";
         request += GOODSTYPE + goodsType;
-        request += API_KEY + "&" + TOKEN + ((Userdata)context).getToken();
+        request += API_KEY + "&" + TOKEN + ((Userdata)context).getToken() + "&";
+        request += UPFILE;
 
-        send = new SendJsonAsyncTask(url,request);
+        send = new SendJsonAsyncTask(url,request,goodsdata.getPicture());
         send.setSendCallBack(new SendCallBack() {
             @Override
             public void SendCallBack(String message) {

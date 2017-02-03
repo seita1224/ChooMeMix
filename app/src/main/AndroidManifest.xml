@@ -31,7 +31,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".TabActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name=".ReviewActivity"
             android:screenOrientation="portrait" />
@@ -70,8 +71,8 @@
             android:name=".RankingResultActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-        >
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
         <activity
             android:name=".ProductReview2Activity"
             android:screenOrientation="portrait"

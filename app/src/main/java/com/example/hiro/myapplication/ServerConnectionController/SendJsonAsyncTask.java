@@ -1,6 +1,9 @@
 package com.example.hiro.myapplication.ServerConnectionController;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
 
 import com.example.hiro.myapplication.ServerConnectionController.ConnectionCallBacks.SendCallBack;
@@ -10,12 +13,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import static android.R.attr.data;
 
 /**
  * Created by seita on 2016/10/21.
@@ -28,6 +34,8 @@ public class SendJsonAsyncTask extends AsyncTask<String,Void,String> {
     private URL url = null;
     private String request;
     private SendCallBack sendCallBack;
+    private byte bitByte[];
+    String base64Bitmap;
     int flg;
 
     //---------------------------------コンスラクタ---------------------------------
@@ -58,6 +66,19 @@ public class SendJsonAsyncTask extends AsyncTask<String,Void,String> {
         Log.d(getClass().getName(),request);
     }
 
+    public SendJsonAsyncTask(URL url, String request, Bitmap bm){
+        this.url = url;
+        this.request = request;
+        flg = 3;
+        if(bm != null){
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            bitByte = baos.toByteArray();
+            base64Bitmap = Base64.encodeToString(bitByte,Base64.DEFAULT);
+            Log.d(getClass().getName(),base64Bitmap);
+        }
+    }
+
     //------------------------------------------------------------------------------
 
 
@@ -75,14 +96,29 @@ public class SendJsonAsyncTask extends AsyncTask<String,Void,String> {
             httpc.setDoOutput(true);
             httpc.setRequestMethod("POST");
             httpc.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+            httpc.setRequestProperty("Content-Length","50000000");
             httpc.setChunkedStreamingMode(0);
 
             //出力用のOutputStreamの生成
             out = httpc.getOutputStream();
             //POST送信処理
 
-            //送信データの登録
-            out.write(request.getBytes());
+            if(flg == 3){
+                //送信データの登録
+                if(base64Bitmap != null){
+                    request += base64Bitmap;
+                    out.write(request.getBytes());
+                    out.write(bitByte);
+                }else{
+                    Log.d(getClass().getName(),"画像ファイルがありません");
+                }
+            }else {
+                //送信データの登録
+                out.write(request.getBytes());
+            }
+
+            Log.d(getClass().getName(),request);
+
 
             //送信
             out.flush();
@@ -115,6 +151,9 @@ public class SendJsonAsyncTask extends AsyncTask<String,Void,String> {
         }finally {
             //接続破棄
             httpc.disconnect();
+        }
+        if(message == null){
+            message = "通信に失敗しました。";
         }
         Log.d(getClass().getName(),message);
         return message;

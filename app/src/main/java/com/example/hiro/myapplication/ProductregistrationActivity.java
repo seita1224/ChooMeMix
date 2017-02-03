@@ -5,8 +5,10 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -34,6 +36,9 @@ import com.example.hiro.myapplication.ServerConnectionController.ConnectionHelpe
 
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.io.InputStream;
+
+import static android.R.attr.data;
 
 /**
  * Created by 2130085 on 2016/11/24.
@@ -175,6 +180,7 @@ public class ProductregistrationActivity extends Activity{
                     @Override
                     public void registerGoods(String message) {
                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getApplicationContext());
+                        Log.d(getClass().getName(),"AlertDialog");
 
                         // アラートダイアログのタイトルを設定します
                         alertDialogBuilder.setTitle("商品登録");
@@ -274,6 +280,7 @@ public class ProductregistrationActivity extends Activity{
             // 画像を設定
             ImageView imageView = (ImageView)findViewById(R.id.goodsTakeImageView);
             imageView.setImageURI(resultUri);
+            goodsdata.setPicture(((BitmapDrawable)imageView.getDrawable()).getBitmap());
         }
     }
 }
